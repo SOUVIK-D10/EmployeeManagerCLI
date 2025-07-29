@@ -1,0 +1,169 @@
+::::FULL SYNTAX ARE TO BE WRITTEN IN SINGLE LINE , NEXT LINE MEANS NEXT COMMAND::::
+
+NOTE:
+1) If the statement has # written before any keyword it means key word is optional. 
+   eg: sort by is optional for search command. 
+2) If the statiment ends with @ it means the position of keyword cannot change if used;
+    others are flexible for relocation
+	eg: search filter[name like "S%"] get[uid,roll,salary] sort by salary++ (notice how place of GET and FILTER are interchanged)
+3) KEYWORDS are not case sensetive; Uppercase is used in this document to highlight the keywords
+4) in string means : must write data enclosed in double quotes eg : name:"Dean Dano" and in int means , salary : 1000000(don't mention unit like USD or euro)
+-----------------------------------------------------------------------------------------------------------------------------------------------------	
+help   -> HELP:#<command>@
+search -> SEARCH #GET[<what to search for. use * for all>] FILTER[<conditions>] #SORT BY <field>(++:ascending/--:decending)@
+EMPLOYEE TABLE format: uid:int Primary key auto increment , name: in string ,roll : in string ,salary : in int
+--1--
+add -> ADD DATA[name:"?",roll:"?",salary:?] (order of data is flexible)
+update -> UPDATE CHANGE[<changes>] FILTER[<condition>]
+delete -> DELETE FILTER[<condition>]
+export -> EXPORT <exact location of directory to be exported>
+import -> IMPORT <csv file to be imported>
+gen salary slip -> GEN SALARY SLIP FILTER[<condition>]   
+undo -> UNDO
+save -> SAVE
+--2--
+view logs -> VIEW LOGS
+view permit -> VIEW PERMIT FILTER[<condition>] #SORT BY <field>[++:ascending/--:decending]@
+new permit -> NEW PERMIT DATA[users:"?",roll:(either:"general","HR","ADMIN"),uid:?,password:"?"]
+change permit -> CHANGE PERMIT CHANGE[<changes>] FILTER[<condition>]
+cancel permit -> CANCEL PERMIT FILTER[<condition>]
+EMPLOYEE TABLE format: uid:in int not key, users(use it as username): in string PRIMARY KEY ,roll : either:"general","HR" or "ADMIN",password :in string 
+(general for analysis and general access,HR for modification access up to employee,ADMIN for full access up to permits and log)
+--3--
+-x-
+help3
+help2
+help1
+SYNTAX :- help:<command>
+Description :- It is used for getting descriptions of specific commands or syntax of all 
+commands available to you in short.
+The command HELP is for syntax summery
+The command HELP:<specific command need help with>
+example: HELP:SEARCH to get help for search command specificely
+EXTRA: EMPLOYEE TABLE format: uid:int Primary key auto increment , name: in string ,roll : in string ,salary : in int
+-x-
+search3
+search2
+search1
+SYNTAX :SEARCH GET[<what to search for. use * for all>] FILTER[<conditions>] SORT BY <field>[++:ascending/--:decending]
+Description : Used to search and get data from database; 
+            GET[] : if you are not searching specific or just put "*" to get all in 
+			        GET(ignoring GET is a option but not recomended see example 1)
+            FILTER[] : if you are not looking for any specific condition use NULL
+             			as a condition in FILTER.
+            SORT BY <field>: you can only mention this keyword at last if you need(optional to use)
+			                 write the name of field in lowercase only;
+                             for desending order use -- for assending ++ at last.
+Examples: 
+1)SEARCH GET[*] FILTER[null] or SEARCH FILTER[null] -> gives all data
+2)SEARCH FILTER[roll like "%Developer"] SORT BY salary-- 
+-> gives all data with roll name ending with word Developer sorted by salary in desending order
+3)SEARCH GET[uid,roll] FILTER[salary>1000000] SORT BY salary++ 
+-> gives all data uid and roll for who earn more than 1000000 sorted by salary in assending order
+-x-
+add3
+add2
+SYNTAX : ADD DATA[name:"?",roll:"?",salary:?]
+Description:Adds data to employee table all fields must be given no flexibility with it ; field must be in lowercase
+             and fields:data is format of writing
+EXAMPLE:
+1)ADD DATA[roll:"IT Trainer",name:"Swapnadip Mukherjee",salary:1500000]
+-x-
+update3
+update2
+SYNTAX: UPDATE CHANGE[<changes separated by comma>] FILTER[<conditions>]
+Description: use to update employee data; all fields and changes are to mentioned inside CHANGE and condition of updation
+             inside FILTER both keywords are not optional but flixible with location
+			 CHANGE[] : write the parameters in it like <field> = <operation/value>
+			 FILTER[] : write the condition. (use NULL if no specific condition)
+EXAMPLE:
+1)UPDATE CHANGE[salary=salary+5000] FILTER[uid=1 or name="Pratap Bansal"]
+-> increases the salary of employee where uid = 1 or name = "Pratap Bansal" 
+2)UPDATE FILTER[roll like "%Manager" and uid<10] CHANGE[roll = "Q3 Manager"]
+-> makes roll of a person with roll ending with manager with uid less than 10 general mamager 
+-x-
+delete3
+delete2
+SYNTAX : DELETE FILTER[<Condition>]
+Description : use to delete a record with a given condition in FILTER if you use NULL all records will be deleted
+              a conformation request and a preview of data to be deleted will be shown,upon acceptance the data will be deleted.
+example:-
+1) DELETE FILTER[roll="Data Entry"]			  
+->deletes all the data which matches the filter condition
+-x-
+export3
+export2
+SYNTAX : EXPORT <exact location of dir to be expoted>
+Description : It is used to export the data of employee table to an external directory(must be a valid dir) in CSV format(only).
+              After verification of given location the you must give a name with which the fill will be exported.
+example:-
+1)EXPORT C:\Dev\Win10\Desktop\test
+-> exported data to test directory in desktop
+-x-
+import3
+import2
+SYNTAX : IMPORT <location of target csv file>
+Description : It is used to import the data for employee table from an external file(must be a valid CSV file with required structure).
+              After verification of given file(except structure) data will be imported.
+Format(not flexible): name|roll|salary (no need to use enclose string values in ""). and remove the header only data in given format
+example(for format): an example is given inside EmployeeManager_jar by name testfile
+example :
+1)IMPORT : IMPORT C:\Dev\Win10\Desktop\testfile.csv
+-x-
+gen salary slip3
+gen salary slip2
+SYNTAX : GEN SALARY SLIP FILTER[<condition>]
+Description : use to generate salary slip for all or certain employee(s).
+              will be put in a directory(asked for after command is given) specified by user.
+              if no condition write NULL inside FILTER.
+Example:-
+1) GEN SALARY SLIP FILTER[NULL]
+-> salary slip is generated for all available employees
+-x-
+undo3
+undo2
+SYNTAX : UNDO
+Description : use to undo or revert modification done to database no redo is possible so make sure to think before undo.
+-x-
+save3
+save2
+SYNTAX : SAVE
+Description : if you are not planning to undo any changes made to database till this point use SAVE command to save changes
+              so the don't get lost.
+-x-
+view logs3
+SYNTAX : VIEW LOGDS
+Description : if you want to view logs of what happened
+-x-
+view permit3
+SYNTAX : VIEW PERMIT FILTER[<conditions>] SORT BY <field>(++:ascending/--:decending)
+Description : use to search permit option of getting specific data is not implemented in it for various reasons.
+             FILTER[]:put the conditions in it to search for permits use NULL if no filter is needed
+             SORT BY(not compuslory to use) : to be placed at last and name of field should be in 
+			                lowercase;(++:ascending/--:decending) must be properly used at the end 		 
+EXAMPLE:-
+1)VIEW PERMIT FILTER[roll="ADMIN"] SORT BY uid++
+-> search for all users who have roll ADMIN and prints them in asending order of uid
+2)VIEW PERMIT FILTER[null]
+-> displays all permits
+-x-
+new permit3
+SYNTAX : NEW PERMIT DATA[users:"?",password:"?",uid:?,roll:(either "ADMIN","general","HR")]
+Description : use to add new permits to users table as per format given above. the roll is fixed
+              for analysis or other purposes use "general" for admins use "ADMIN" and for HR level roles
+			  use "HR" no flexibility with case highly case sensetive.
+-x-
+change permit3
+SYNTAX : CHANGE PERMIT CHANGE[<changes>] FILTER[<conditions>]
+DESCRIPTION : you need to write all the changes separated by comma inside CHANGE keyword and
+              where to change i.e condition is to be put in FILTER if no condition put NULL
+			  keywords CHANGE[] and FILTER[] are flexible
+EXAMPLE:
+1)CHANGE PERMIT CHANGE[roll="general"] FILTER[uid=5]
+2)CHANGE PERMIT CHANGE[password="8989sjsj"] FILTER[users="svkc"]
+-x-
+cancel permit3
+SYNTAX : CANCEL PERMIT FILTER[<condition>]
+Description : It is used to delete permits of users. Put condition of deletion in FILTER.
+              If you put NULL in FILTER it will delete all renduring the whole system useless. 
+-x-
